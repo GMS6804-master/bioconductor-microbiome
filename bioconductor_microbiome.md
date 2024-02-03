@@ -5,7 +5,11 @@ In this tutorial, we use a [bioconductor docker image](https://www.bioconductor.
 # Overview
 Here we walk through computing microbial alpha diversity using the microbiome/phyloseq packages. We will start from the OTU tables, complete some exploratory analysis, compute alpha diversity and visually explore the results.
 
-In the examples below, `$` indicates the command line prompt within the container.
+- In the examples below, `$` indicates the command line prompt within the container.
+
+
+- In the example below you will need to export figures using CLI. I have provided an example using a function called png(file="file_name.png") that comes before the plotting function and the dev.off() directly after the plotting function. 
+
 
 <!-- blank line -->
 ----
@@ -92,19 +96,19 @@ $ R
 
 ### 7. Load data for the tutorial
 
-First 7 lines of code:
 ```
 library("microbiome")
 data(dietswap)
 print(dietswap)
+pseq <- dietswap
+```
+
+### 8. Compute Microbial Diversity Metrics
 
 ```
-continue through the rest of the tutorial. 
-
-### 8. Exporting Figures
-
-Exporting figures via command-line requires a few more R functions. 
-Note- the example below has a function called png(file="file_name.png") that comes before the plotting function and the dev.off() directly after the plotting function. 
+tab <-microbiome::alpha(pseq, index = "all")
+kable(head(tab))
+```
 
 ```
 # 4 Exploratory analysis and visualization
