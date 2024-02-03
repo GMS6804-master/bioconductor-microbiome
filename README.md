@@ -11,7 +11,7 @@ You will need to be comfortable with the following:
 
 ### [Part 1: Build a Docker Image](https://github.com/GMS6804-master/bioconductor_microbiome/blob/main/docker_build.md) 
 
-### [Part 2: Complete Microbiome Tutorial]()
+### [Part 2: Complete Microbiome Tutorial](https://github.com/GMS6804-master/bioconductor_microbiome/blob/main/assignment.html)
 
 
 <!-- blank line -->
