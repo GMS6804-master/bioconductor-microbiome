@@ -1,8 +1,15 @@
-## RNA-seq workflow: gene-level exploratory analysis and differential expression
+## Microbiome Alpha Diversity Analysis
 
-In this tutorial, we use a [bioconductor docker image](https://www.bioconductor.org/help/docker/) that includes [asciinema](https://asciinema.org/) functionality to run the [RNA-seq tutorial](https://www.bioconductor.org/packages/devel/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html). Here we walk through an end-to-end gene-level RNA-seq differential expression workflow using Bioconductor packages. We will start from the FASTQ files, show how these were quantified to the reference transcripts, and prepare gene-level count datasets for downstream analysis. We will perform exploratory data analysis (EDA) for quality assessment and to explore the relationship between samples, perform differential gene expression analysis, and visually explore the results.
+In this tutorial, we use a [bioconductor docker image](https://www.bioconductor.org/help/docker/) that includes the [microbiome package](Introduction to the microbiome R package) and [asciinema](https://asciinema.org/). We will complete the [Alpha Diversity Tutorial](https://microbiome.github.io/tutorials/Alphadiversity.html) using a the [dietswap data set](https://microbiome.github.io/tutorials/Data.html). The "dietswap" data is from a two-week diet swap study between western (USA) and traditional (rural Africa) diets reported in [O’Keefe et al. Nat. Comm. 6:6342, 2015](http://dx.doi.org/10.1038/ncomms7342). 
 
-In the examples below, `$` indicates the command line prompt within the container.
+# Overview
+Here we walk through computing microbial alpha diversity using the microbiome/phyloseq packages. We will start from the OTU tables, complete some exploratory analysis, compute alpha diversity and visually explore the results.
+
+- In the examples below, `$` indicates the command line prompt within the container.
+
+
+- In the example below you will need to export figures using CLI. I have provided an example using a function called png(file="file_name.png") that comes before the plotting function and the dev.off() directly after the plotting function. 
+
 
 <!-- blank line -->
 ----
@@ -11,7 +18,7 @@ In the examples below, `$` indicates the command line prompt within the containe
 ## Learning Objectives:
  - pull a [bioconductor docker image](https://hub.docker.com/r/bioconductor/bioconductor_docker) from DockerHub
  - run the bioconductor/bioconductor_docker container via docker
- - perform exploratory data analysis (EDA) on RNA-seq data
+ - perform exploratory data analysis (EDA) on example data
 
 ## Assignment 
 1. Complete the assignment described below.
@@ -47,16 +54,16 @@ In the examples below, `$` indicates the command line prompt within the containe
 
 ### 2. pull a docker image from DockerHub
 ```
-docker pull [YOUR DOCKERHUB ID]/bioconductor_rnaseq:[month_year]
+docker pull [YOUR DOCKERHUB ID]/bioconductor_microbiome:[month_year]
 ```
 
 ### 3. boot into container as bash while also mounting a "dropbox-style" directory that will link your docker container to your local machine
 ```
-docker run -it -v [path-to-working-directory]:/projeect dominicklemas/bioconductor_rnaseq:04_2023 bash
+docker run -it -v [path-to-working-directory]:/projeect dominicklemas/bioconductor_microbiome:02_2024 bash
 ```
 As an example: 
 ```
-docker run -it -v C:/Users/djlemas/OneDrive/Documents/rna-seq:/project dominicklemas/bioconductor_rnaseq:04_2023 bash
+docker run -it -v C:/Users/djlemas/OneDrive/Documents/microbiome:/project dominicklemas/bioconductor_microbiome:02_2024 bash
 ```
 <!-- blank line -->
 ----
@@ -76,7 +83,7 @@ $ asciinema auth
 $ asciinema rec
 $ # Name: 
 $ # Date: 
-$ # bioconductor:: bioconductor_rnaseq
+$ # bioconductor:: bioconductor_microbiome
 ```
 <!-- blank line -->
 ----
@@ -87,40 +94,98 @@ $ # bioconductor:: bioconductor_rnaseq
 $ R
 ```
 
-### 7. Begin the tutorial at 2.3 Reading in data with tximeta
-
-First 7 lines of code:
-```
-library("airway")
-dir <- system.file("extdata", package="airway", mustWork=TRUE)
-list.files(dir)
-list.files(file.path(dir, "quants"))
-csvfile <- file.path(dir, "sample_table.csv")
-coldata <- read.csv(csvfile, row.names=1, stringsAsFactors=FALSE)
-coldata
-```
-continue through the rest of the tutorial. 
-
-### 8. Exporting Figures
-
-Exporting figures via command-line requires a few more R functions. 
-Note- the example below has a function called png(file="file_name.png") that comes before the plotting function and the dev.off() directly after the plotting function. 
+### 7. Load data and Compute Microbial Diversity Metrics
 
 ```
-# 4 Exploratory analysis and visualization
-nrow(dds)
-keep <- rowSums(counts(dds)) > 1
-dds <- dds[keep,]
-nrow(dds)
-keep <- rowSums(counts(dds) >= 10) >= 3
-lambda <- 10^seq(from = -1, to = 2, length = 1000)
-cts <- matrix(rpois(1000*100, lambda), ncol = 100)
+library("microbiome")
+data(dietswap)
+print(dietswap)
+pseq <- dietswap
+tab <-microbiome::alpha(pseq, index = "all")
+kable(head(tab))
 
-# Figure_4.2.1
-png(filename = "Figure_4.2.1.png");
+```
+#### Question 7.1: How many samples are in the study? 
+
+```
+
+```
+
+#### Question 7.2: Determine richness (something)
+
+```
+tab <- richness(pseq)
+kable(head(tab))
+
+# Figure_8.1_Richness
+png(filename = "Figure_8.1_Richness.png");
 meanSdPlot(cts, ranks = FALSE);
 dev.off()
 ```
+
+#### Question 7.3: Determine dominance (something)
+
+```
+tab <- dominance(pseq, index = "all")
+kable(head(tab))
+
+# Figure_8.1_Richness
+png(filename = "Figure_8.1_Richness.png");
+meanSdPlot(cts, ranks = FALSE);
+dev.off()
+```
+## Testing differences in alpha diversity
+We recommend the non-parametric [Kolmogorov-Smirnov test](https://www.rdocumentation.org/packages/dgof/versions/1.2/topics/ks.test) for two-group comparisons when there are no relevant covariates.
+
+```
+ps1 <- prune_taxa(taxa_sums(pseq) > 0, pseq)
+tab <- microbiome::alpha(ps1, index = "all")
+kable(head(tab))
+```
+#### Question 8.1: How many [something about metadata]
+```
+ps1.meta <- meta(ps1)
+kable(head(ps1.meta))
+```
+#### Question 8.2: Visualizes differences in Shannon index between bmi group 
+
+# combine diversity and metadata
+```
+ps1.meta$Shannon <- tab$diversity_shannon 
+ps1.meta$InverseSimpson <- tab$diversity_inverse_simpson
+
+```
+# create a list of pairwise comparisons
+```
+bmi <- levels(ps1.meta$bmi_group) 
+```
+# make a pairwise list that we want to compare.
+```
+bmi.pairs <- combn(seq_along(bmi), 2, simplify = FALSE, FUN = function(i)bmi[i])
+print(bmi.pairs)
+```
+# create a violin plot 
+```
+#ps1.meta$'' <- alpha(ps1, index = 'shannon')
+p1 <- ggviolin(ps1.meta, x = "bmi_group", y = "Shannon",
+ add = "boxplot", fill = "bmi_group", palette = c("#a6cee3", "#b2df8a", "#fdbf6f")) 
+print(p1)
+```
+# insert pairwise comparison using non-parametric test (Wilcoxon test).
+
+```
+p1 <- p1 + stat_compare_means(comparisons = bmi.pairs) 
+print(p1)
+```
+
+# Figure_8.1_Richness
+png(filename = "Figure_8.1_Richness.png");
+meanSdPlot(cts, ranks = FALSE);
+dev.off()
+```
+
+
+
 ### 9. stop your screen-cast recording 
 
 ***CTRL+D*** or ***CTRL+C*** to stop recording
