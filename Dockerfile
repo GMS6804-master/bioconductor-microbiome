@@ -7,3 +7,9 @@ RUN apt-get update
 RUN R -e 'BiocManager::install(ask = F)' && R -e 'BiocManager::install(c("microbiome", \
     ask = F))' 
 
+### Install asciinema
+RUN apt-get install -y  \
+asciinema 
+
+### Set Working Directory
+WORKDIR /project
