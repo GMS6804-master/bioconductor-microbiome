@@ -94,37 +94,73 @@ $ # bioconductor:: bioconductor_microbiome
 $ R
 ```
 
-### 7. Load data for the tutorial
+### 7. Load data and Compute Microbial Diversity Metrics
 
 ```
 library("microbiome")
 data(dietswap)
 print(dietswap)
 pseq <- dietswap
-```
-
-### 8. Compute Microbial Diversity Metrics
-
-```
 tab <-microbiome::alpha(pseq, index = "all")
 kable(head(tab))
+
+```
+#### Question 7.1: How many samples are in the study? 
+
 ```
 
 ```
-# 4 Exploratory analysis and visualization
-nrow(dds)
-keep <- rowSums(counts(dds)) > 1
-dds <- dds[keep,]
-nrow(dds)
-keep <- rowSums(counts(dds) >= 10) >= 3
-lambda <- 10^seq(from = -1, to = 2, length = 1000)
-cts <- matrix(rpois(1000*100, lambda), ncol = 100)
 
-# Figure_4.2.1
-png(filename = "Figure_4.2.1.png");
+#### Question 7.2: Determine richness (something)
+
+```
+tab <- richness(pseq)
+kable(head(tab))
+
+# Figure_8.1_Richness
+png(filename = "Figure_8.1_Richness.png");
 meanSdPlot(cts, ranks = FALSE);
 dev.off()
 ```
+
+#### Question 7.3: Determine dominance (something)
+
+```
+tab <- dominance(pseq, index = "all")
+kable(head(tab))
+
+# Figure_8.1_Richness
+png(filename = "Figure_8.1_Richness.png");
+meanSdPlot(cts, ranks = FALSE);
+dev.off()
+```
+## Testing differences in alpha diversity
+We recommend the non-parametric [Kolmogorov-Smirnov test](https://www.rdocumentation.org/packages/dgof/versions/1.2/topics/ks.test) for two-group comparisons when there are no relevant covariates.
+
+# Construct the data
+d <- meta(pseq)
+d$diversity <- microbiome::diversity(pseq, "shannon")$shannon
+# Split the values by group
+spl <- split(d$diversity, d$sex)
+# Kolmogorov-Smironv test
+pv <- ks.test(spl$female, spl$male)$p.value
+# Adjust the p-value
+padj <- p.adjust(pv)
+
+#### Question 8.1: 
+
+```
+tab <- dominance(pseq, index = "all")
+kable(head(tab))
+
+# Figure_8.1_Richness
+png(filename = "Figure_8.1_Richness.png");
+meanSdPlot(cts, ranks = FALSE);
+dev.off()
+```
+
+
+
 ### 9. stop your screen-cast recording 
 
 ***CTRL+D*** or ***CTRL+C*** to stop recording
