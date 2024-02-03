@@ -36,7 +36,7 @@ This assignment walks you through modifying an [bioconductor docker images](http
 ----
 <!-- blank line -->
 
-### 2. create a new container that installs asciinema using a dockerfile
+### 2. create a new image with bioconductor and asciinema using a dockerfile
 ```
 docker build -t bioconductor_microbiome .
 ```
@@ -44,7 +44,7 @@ docker build -t bioconductor_microbiome .
 ----
 <!-- blank line -->
 
-### 3. test your the new docker container 
+### 3. boot into your new docker container 
 ```
 docker run -it bioconductor_microbiome:latest bash
 ```
@@ -62,7 +62,7 @@ pwd: [YOUR PASSWORD]
 ----
 <!-- blank line -->
 
-### 5. tag container
+### 5. tag your container with the date
 ```
 docker tag bioconductor_microbiome [YOUR DOCKERHUB ID]/bioconductor_microbiome:[month_year]
 ```
@@ -70,7 +70,7 @@ docker tag bioconductor_microbiome [YOUR DOCKERHUB ID]/bioconductor_microbiome:[
 ----
 <!-- blank line -->
 
-### 6. push to DockerHub
+### 6. push your container to DockerHub
 ```
 docker push [YOUR DOCKERHUB ID]/bioconductor_microbiome:[month_year]
 ```
