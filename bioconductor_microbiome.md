@@ -158,7 +158,7 @@ ps1.meta$InverseSimpson <- tab$diversity_inverse_simpson
 ```
 bmi <- levels(ps1.meta$bmi_group) 
 ```
-#### make a pairwise list that we want to compare.
+#### select thhe pairs we want to compare.
 ```
 bmi.pairs <- combn(seq_along(bmi), 2, simplify = FALSE, FUN = function(i)bmi[i])
 print(bmi.pairs)
