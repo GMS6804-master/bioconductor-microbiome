@@ -112,26 +112,26 @@ kable(head(tab))
 
 ```
 
-#### Question 7.2: Determine richness (something)
+#### Question 7.2: How do you compute species richness? What is species richness and why is it important for microbiome studies?
 
 ```
 tab <- richness(pseq)
 kable(head(tab))
 
-# Figure_8.1_Richness
-png(filename = "Figure_8.1_Richness.png");
+# Figure_7.2_Richness
+png(filename = "Figure_7.2_Richness.png");
 meanSdPlot(cts, ranks = FALSE);
 dev.off()
 ```
 
-#### Question 7.3: Determine dominance (something)
+#### Question 7.3: How do you compute species dominance? What is species dominance and why is it important for microbiome studies?
 
 ```
 tab <- dominance(pseq, index = "all")
 kable(head(tab))
 
-# Figure_8.1_Richness
-png(filename = "Figure_8.1_Richness.png");
+# Figure_7.3_Dominance
+png(filename = "Figure_7.3_Dominance.png");
 meanSdPlot(cts, ranks = FALSE);
 dev.off()
 ```
