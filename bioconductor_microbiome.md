@@ -17,7 +17,7 @@ Here we walk through computing microbial alpha diversity using the microbiome/ph
 
 ## Learning Objectives:
  - pull a [bioconductor docker image](https://hub.docker.com/r/bioconductor/bioconductor_docker) from DockerHub
- - run the bioconductor/bioconductor_docker container via docker
+ - run the bioconductor/bioconductor_microbiome container via docker
  - perform exploratory data analysis (EDA) on example data
 
 ## Assignment 
@@ -29,7 +29,8 @@ Here we walk through computing microbial alpha diversity using the microbiome/ph
 
 ### Prerequisites
 * create an asciinema account using email at [asccinema.org](https://asciinema.org/login/new) 
-* navigate to the your project directory: ~/path/to/project/
+* clone the repository to your local machine: https://github.com/GMS6804-master/bioconductor_microbiome/tree/main
+* navigate to the directory: ~/path/to/repository/
 <!-- blank line -->
 ----
 <!-- blank line -->
