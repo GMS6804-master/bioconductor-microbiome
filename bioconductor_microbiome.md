@@ -58,9 +58,9 @@ Here we walk through computing microbial alpha diversity using the microbiome/ph
 docker pull [YOUR DOCKERHUB ID]/bioconductor_microbiome:[month_year]
 ```
 
-### 3. boot into container as bash while also mounting a "dropbox-style" directory that will link your docker container to your local machine
+### 3. boot into container & share a directory between the container and local machine
 ```
-docker run -it -v [path-to-working-directory]:/projeect dominicklemas/bioconductor_microbiome:02_2024 bash
+docker run -it -v [path-to-working-directory]:/project [YOUR DOCKERHUB ID]/bioconductor_microbiome:[month_year] bash
 ```
 As an example: 
 ```
@@ -70,7 +70,7 @@ docker run -it -v C:/Users/djlemas/OneDrive/Documents/microbiome:/project domini
 ----
 <!-- blank line -->
 
-### 4. link your container to your asciinema.org account by opening the URL in a web browser 
+### 4. link your container to your asciinema.org account. Open the URL in a web browser on local machine 
 ```
 $ asciinema auth
 ```
