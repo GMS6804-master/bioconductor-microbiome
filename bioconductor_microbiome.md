@@ -112,7 +112,7 @@ kable(head(tab))
 
 ```
 
-#### Question 7.2: How do you compute species richness? What is species richness and why is it important for microbiome studies?
+#### Question 7.2: What is the species richness and why is it important for microbiome studies?
 
 ```
 tab <- richness(pseq)
@@ -124,7 +124,7 @@ meanSdPlot(cts, ranks = FALSE);
 dev.off()
 ```
 
-#### Question 7.3: How do you compute species dominance? What is species dominance and why is it important for microbiome studies?
+#### Question 7.3: What is species dominance and why is it important for microbiome studies?
 
 ```
 tab <- dominance(pseq, index = "all")
