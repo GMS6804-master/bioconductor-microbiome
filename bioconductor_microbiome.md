@@ -132,7 +132,7 @@ meanSdPlot(cts, ranks = FALSE);
 dev.off()
 ```
 ## How can you test for differences in alpha diversity?
-We recommend the non-parametric [Kolmogorov-Smirnov test](https://www.rdocumentation.org/packages/dgof/versions/1.2/topics/ks.test) for two-group comparisons when there are no relevant covariates.
+The non-parametric [Kolmogorov-Smirnov test](https://www.rdocumentation.org/packages/dgof/versions/1.2/topics/ks.test) for two-group comparisons when there are no relevant covariates.
 
 ```
 ps1 <- prune_taxa(taxa_sums(pseq) > 0, pseq)
@@ -144,31 +144,24 @@ kable(head(tab))
 ps1.meta <- meta(ps1)
 kable(head(ps1.meta))
 ```
-#### Question 8.2: Visualizes differences in Shannon index between bmi group combine diversity and metadata
+#### Question 8.2: Please visualizes the differences in Shannon index between bmi groups
 ```
+# create a list of pairwise comparisons
 ps1.meta$Shannon <- tab$diversity_shannon 
 ps1.meta$InverseSimpson <- tab$diversity_inverse_simpson
-
-```
-#### create a list of pairwise comparisons
-```
 bmi <- levels(ps1.meta$bmi_group) 
-```
-#### select thhe pairs we want to compare.
-```
+
+# select the pairs we want to compare.
 bmi.pairs <- combn(seq_along(bmi), 2, simplify = FALSE, FUN = function(i)bmi[i])
 print(bmi.pairs)
-```
-#### create a violin plot 
-```
+
+# create a violin plot 
 #ps1.meta$'' <- alpha(ps1, index = 'shannon')
 p1 <- ggviolin(ps1.meta, x = "bmi_group", y = "Shannon",
  add = "boxplot", fill = "bmi_group", palette = c("#a6cee3", "#b2df8a", "#fdbf6f")) 
 print(p1)
-```
-#### insert pairwise comparison using non-parametric test (Wilcoxon test).
 
-```
+# insert pairwise comparison using non-parametric test (Wilcoxon test).
 p1 <- p1 + stat_compare_means(comparisons = bmi.pairs) 
 print(p1)
 ```
@@ -178,9 +171,6 @@ png(filename = "Figure_8.1_Richness.png");
 meanSdPlot(cts, ranks = FALSE);
 dev.off()
 ```
-
-
-
 ### 9. stop your screen-cast recording 
 
 ***CTRL+D*** or ***CTRL+C*** to stop recording
