@@ -97,6 +97,7 @@ $ R
 
 ### 7. Load data and Compute Microbial Diversity Metrics
 
+#### Question 7.1: How many samples are in the study? 
 ```
 library("microbiome")
 data(dietswap)
@@ -104,11 +105,6 @@ print(dietswap)
 pseq <- dietswap
 tab <-microbiome::alpha(pseq, index = "all")
 kable(head(tab))
-
-```
-#### Question 7.1: How many samples are in the study? 
-
-```
 
 ```
 
@@ -135,7 +131,7 @@ png(filename = "Figure_7.3_Dominance.png");
 meanSdPlot(cts, ranks = FALSE);
 dev.off()
 ```
-## Testing differences in alpha diversity
+## How can you test for differences in alpha diversity?
 We recommend the non-parametric [Kolmogorov-Smirnov test](https://www.rdocumentation.org/packages/dgof/versions/1.2/topics/ks.test) for two-group comparisons when there are no relevant covariates.
 
 ```
