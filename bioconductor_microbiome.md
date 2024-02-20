@@ -123,7 +123,7 @@ kable(head(richness))
 
 # Figure_7.3_Richness
 png(filename = "Figure_7.3_richness.png");
-hist(richness$chao1);
+hist(richness$chao1)
 dev.off()
 ```
 
@@ -135,7 +135,7 @@ kable(head(evenness))
 
 # Figure_7.4_Evenness
 png(filename = "Figure_7.4_evenness.png");
-hist(evenness$simpson);
+hist(evenness$simpson)
 dev.off()
 ```
 
