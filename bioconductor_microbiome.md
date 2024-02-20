@@ -122,7 +122,7 @@ richness <- richness(pseq)
 kable(head(richness))
 
 # Figure_7.3_Richness
-png(filename = "Figure_7.3_Richness.png");
+png(filename = "Figure_7.3_richness.png");
 hist(richness$chao1);
 dev.off()
 ```
@@ -134,7 +134,7 @@ evenness <- evenness(pseq, "all")
 kable(head(evenness))
 
 # Figure_7.4_Evenness
-png(filename = "Figure_7.4_Evenness.png");
+png(filename = "Figure_7.4_evenness.png");
 hist(evenness$simpson);
 dev.off()
 ```
@@ -201,7 +201,7 @@ ggarrange(p1) %>%
 ```
 
 
-### 9. stop your screen-cast recording 
+### 10. stop your screen-cast recording 
 
 ***CTRL+D*** or ***CTRL+C*** to stop recording
 ***ENTER*** or ***CTRL+C*** to stop recording
