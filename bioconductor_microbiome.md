@@ -103,6 +103,8 @@ $ R
 library("microbiome")
 library("knitr")
 library("dplyr")
+library("ggplot2")
+library("ggpubr")
 data(dietswap)
 print(dietswap)
 
@@ -116,68 +118,89 @@ tally()
 #### Question 7.3: What is the species richness and why is it important for microbiome studies?
 ```
 pseq <- dietswap
-tab <-microbiome::alpha(pseq, index = "all")
-kable(head(tab))
-tab <- richness(pseq)
-kable(head(tab))
+richness <- richness(pseq)
+kable(head(richness))
 
 # Figure_7.3_Richness
 png(filename = "Figure_7.3_Richness.png");
-hist(tab$chao1);
+hist(richness$chao1);
 dev.off()
 ```
 
-#### Question 7.3: What is species dominance and why is it important for microbiome studies?
+#### Question 7.4: What is species evenness and why is it important for microbiome studies?
 
 ```
-tab <- dominance(pseq, index = "all")
-kable(head(tab))
+evenness <- evenness(pseq, "all")
+kable(head(evenness))
 
-# Figure_7.3_Dominance
-png(filename = "Figure_7.3_Dominance.png");
-meanSdPlot(cts, ranks = FALSE);
+# Figure_7.4_Evenness
+png(filename = "Figure_7.4_Evenness.png");
+hist(evenness$simpson);
 dev.off()
 ```
-## How can you test for differences in alpha diversity?
+
+## 8.1: How can you visualize the differences in alpha diversity according to sex?
+To visualize diversity measures, the package provides a simple wrapper around ggplot2. Currently onnly one measure can be visualized at a time.
+
+```
+png(filename = "Figure_8.1_shannon_by_sex.png");
+p.shannon <- boxplot_alpha(pseq, 
+                           index = "shannon",
+                           x_var = "sex",
+                           fill.colors = c(female="cyan4", male="deeppink4"))
+
+p.shannon <- p.shannon + theme_minimal() + 
+  labs(x="Sex", y="Shannon diversity") +
+  theme(axis.text = element_text(size=12),
+        axis.title = element_text(size=16),
+        legend.text = element_text(size=12),
+        legend.title = element_text(size=16))
+p.shannon
+dev.off()
+```
+
+### 8.2: How can you test for differences in alpha diversity according to sex? What is the "pv" and "padj"?
+
 The non-parametric [Kolmogorov-Smirnov test](https://www.rdocumentation.org/packages/dgof/versions/1.2/topics/ks.test) for two-group comparisons when there are no relevant covariates.
 
 ```
-ps1 <- prune_taxa(taxa_sums(pseq) > 0, pseq)
-tab <- microbiome::alpha(ps1, index = "all")
-kable(head(tab))
+# Construct the data
+d <- meta(pseq)
+d$diversity <- microbiome::diversity(pseq, "shannon")$shannon
+# Split the values by group
+spl <- split(d$diversity, d$sex)
+# Kolmogorov-Smironv test
+pv <- ks.test(spl$female, spl$male)$p.value
+# Adjust the p-value
+padj <- p.adjust(pv)
 ```
-#### Question 8.1: How many [something about metadata]
+
+### Question 9.2: What is the difference in Shannon index between bmi groups? How do you interpret the results?
 ```
-ps1.meta <- meta(ps1)
-kable(head(ps1.meta))
-```
-#### Question 8.2: Please visualizes the differences in Shannon index between bmi groups
-```
+# Get the metadata (sample_data) from the phyloseq object
+pseq.meta <- meta(pseq)
+kable(head(pseq.meta))
+
 # create a list of pairwise comparisons
-ps1.meta$Shannon <- tab$diversity_shannon 
-ps1.meta$InverseSimpson <- tab$diversity_inverse_simpson
-bmi <- levels(ps1.meta$bmi_group) 
+tab <- microbiome::alpha(pseq, index = "all")
+pseq.meta$Shannon <- tab$diversity_shannon 
+pseq.meta$InverseSimpson <- tab$diversity_inverse_simpson
+bmi <- levels(pseq.meta$bmi_group) 
 
 # select the pairs we want to compare.
 bmi.pairs <- combn(seq_along(bmi), 2, simplify = FALSE, FUN = function(i)bmi[i])
 print(bmi.pairs)
 
-# create a violin plot 
-#ps1.meta$'' <- alpha(ps1, index = 'shannon')
-p1 <- ggviolin(ps1.meta, x = "bmi_group", y = "Shannon",
+# create a violin plot and add stats from non-parametric test (Wilcoxon test) 
+p1 <- ggviolin(pseq.meta, x = "bmi_group", y = "Shannon",
  add = "boxplot", fill = "bmi_group", palette = c("#a6cee3", "#b2df8a", "#fdbf6f")) 
-print(p1)
-
-# insert pairwise comparison using non-parametric test (Wilcoxon test).
-p1 <- p1 + stat_compare_means(comparisons = bmi.pairs) 
-print(p1)
+p1 <- p1 + stat_compare_means(comparisons = bmi.pairs)
+# Export to png
+ggarrange(p1) %>%
+  ggexport(filename = "Figure_9.2_alpha_bmi_groups.png")
 ```
 
-# Figure_8.1_Richness
-png(filename = "Figure_8.1_Richness.png");
-meanSdPlot(cts, ranks = FALSE);
-dev.off()
-```
+
 ### 9. stop your screen-cast recording 
 
 ***CTRL+D*** or ***CTRL+C*** to stop recording
