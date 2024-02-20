@@ -64,7 +64,7 @@ docker run -it -v [path-to-working-directory]:/project [YOUR DOCKERHUB ID]/bioco
 ```
 As an example: 
 ```
-docker run -it -v C:/Users/djlemas/OneDrive/Documents/microbiome:/project dominicklemas/bioconductor_microbiome:02_2024 bash
+docker run -it -v C:/Users/djlemas/OneDrive/Documents/bioconductor_microbiome:/project dominicklemas/bioconductor_microbiome:02_2024 bash
 ```
 <!-- blank line -->
 ----
