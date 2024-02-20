@@ -97,26 +97,33 @@ $ R
 
 ### 7. Load data and Compute Microbial Diversity Metrics
 
-#### Question 7.1: How many samples are in the study? 
+#### Question 7.1: What is the distribution of male/female in the study? 
+#### Question 7.2: What is the distribution of sex within BMI groups?
 ```
 library("microbiome")
+library("knitr")
+library("dplyr")
 data(dietswap)
 print(dietswap)
+
+meta_df=as_tibble(sample_data(dietswap))
+
+meta_df %>%
+group_by(bmi_group, sex) %>%
+tally()
+```
+
+#### Question 7.3: What is the species richness and why is it important for microbiome studies?
+```
 pseq <- dietswap
 tab <-microbiome::alpha(pseq, index = "all")
 kable(head(tab))
-
-```
-
-#### Question 7.2: What is the species richness and why is it important for microbiome studies?
-
-```
 tab <- richness(pseq)
 kable(head(tab))
 
-# Figure_7.2_Richness
-png(filename = "Figure_7.2_Richness.png");
-meanSdPlot(cts, ranks = FALSE);
+# Figure_7.3_Richness
+png(filename = "Figure_7.3_Richness.png");
+hist(tab$chao1);
 dev.off()
 ```
 
