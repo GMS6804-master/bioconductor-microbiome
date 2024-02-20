@@ -95,7 +95,7 @@ $ # bioconductor:: bioconductor_microbiome
 $ R
 ```
 
-### 7. Load data and Compute Microbial Diversity Metrics
+### 7. Compute Microbial Diversity Metrics
 
 #### Question 7.1: What is the distribution of male/female in the study? 
 #### Question 7.2: What is the distribution of sex within BMI groups?
@@ -139,7 +139,7 @@ hist(evenness$simpson);
 dev.off()
 ```
 
-## 8.1: How can you visualize the differences in alpha diversity according to sex?
+#### 8.1: How can you visualize the differences in alpha diversity according to sex?
 To visualize diversity measures, the package provides a simple wrapper around ggplot2. Currently onnly one measure can be visualized at a time.
 
 ```
@@ -159,7 +159,7 @@ p.shannon
 dev.off()
 ```
 
-### 8.2: How can you test for differences in alpha diversity according to sex? What is the "pv" and "padj"?
+#### 8.2: How can you test for differences in alpha diversity according to sex? What is the "pv" and "padj"?
 
 The non-parametric [Kolmogorov-Smirnov test](https://www.rdocumentation.org/packages/dgof/versions/1.2/topics/ks.test) for two-group comparisons when there are no relevant covariates.
 
@@ -175,7 +175,7 @@ pv <- ks.test(spl$female, spl$male)$p.value
 padj <- p.adjust(pv)
 ```
 
-### Question 9.2: What is the difference in Shannon index between bmi groups? How do you interpret the results?
+#### Question 9.2: What is the difference in Shannon index between bmi groups? How do you interpret the results?
 ```
 # Get the metadata (sample_data) from the phyloseq object
 pseq.meta <- meta(pseq)
