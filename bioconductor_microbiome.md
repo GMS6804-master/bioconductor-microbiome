@@ -1,6 +1,6 @@
 ## Microbiome Alpha Diversity Analysis
 
-In this tutorial, we use a [bioconductor docker image](https://www.bioconductor.org/help/docker/) that includes the [microbiome package](https://bioconductor.org/packages/release/bioc/html/microbiome.html) and [asciinema](https://asciinema.org/). We will complete the [Alpha Diversity Tutorial](https://microbiome.github.io/tutorials/Alphadiversity.html) using a the [dietswap data set](https://microbiome.github.io/tutorials/Data.html). The "dietswap" data is from a two-week diet swap study between western (USA) and traditional (rural Africa) diets reported in [O’Keefe et al. Nat. Comm. 6:6342, 2015](http://dx.doi.org/10.1038/ncomms7342). 
+In this tutorial, we use a [bioconductor docker image](https://www.bioconductor.org/help/docker/) that includes the [microbiome package](https://bioconductor.org/packages/release/bioc/html/microbiome.html) and [asciinema](https://asciinema.org/). We will complete the [Alpha Diversity Tutorial](https://microbiome.github.io/tutorials/Alphadiversity.html) using the [dietswap data set](https://microbiome.github.io/tutorials/Data.html). The "dietswap" data is from a two-week diet swap study between western (USA) and traditional (rural Africa) diets reported in [O’Keefe et al. Nat. Comm. 6:6342, 2015](http://dx.doi.org/10.1038/ncomms7342). 
 
 # Overview
 Here we walk through computing microbial alpha diversity using the microbiome/phyloseq packages. We will start from the OTU tables, complete some exploratory analysis, compute alpha diversity and visually explore the results.
