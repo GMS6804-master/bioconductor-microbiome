@@ -44,9 +44,22 @@ docker build -t bioconductor_microbiome .
 ----
 <!-- blank line -->
 
-### 3. boot into your new docker container 
+### 3. boot into your new docker container & test R libraries 
 ```
 docker run -it bioconductor_microbiome:latest bash
+```
+when you boot into the container, you should see something similar to:
+```
+root@[some-numbers/characters]:/project#
+```
+start R and test bioconductor libraries (i.e. microbiome) are installed correctly. you should see something about phyloseq if the microbiome package is installed correctly.
+```
+R
+library(microbiome)
+```
+next you need to exit R
+```
+quit()
 ```
 <!-- blank line -->
 ----
