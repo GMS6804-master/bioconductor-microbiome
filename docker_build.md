@@ -57,7 +57,7 @@ start R and test bioconductor libraries (i.e. microbiome) are installed correctl
 R
 library(microbiome)
 ```
-next you need to exit R
+after confirming the microbiome package is installed correctly, you will then exit R
 ```
 quit()
 ```
