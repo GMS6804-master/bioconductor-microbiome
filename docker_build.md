@@ -61,6 +61,11 @@ next you need to exit R
 ```
 quit()
 ```
+then you need to exit the container
+```
+CTRL-D
+```
+
 <!-- blank line -->
 ----
 <!-- blank line -->
